@@ -1,0 +1,24 @@
+name: GammaExp
+stationary: true
+params: [log_alpha]
+
+doc: |
+    Gamma-exponential kernel.
+
+    :param log_alpha:
+        The log of the exponent of the squared radius.
+
+reparams:
+    alpha:
+        return exp(log_alpha);
+
+value: |
+    return exp(-pow(r2, alpha));
+
+grad:
+    r2: |
+        if (r2 < DBL_EPSILON) return 0.0;
+        return -alpha*pow(r2, alpha-1)*exp(-pow(r2, alpha));
+    log_alpha: |
+        if (r2 < DBL_EPSILON) return 0.0;
+        return -alpha*pow(r2, alpha)*log(r2)*exp(-pow(r2, alpha));
